@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle del Producto - FarmaSur</title>
+    <link rel="icon" type="image/x-icon" href="images/assets/faviconn.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Estilos para animar suavemente el menú desplegable (acordeón) */
@@ -19,41 +20,111 @@
         <div class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
             <!-- Logo que funciona como botón de inicio -->
 <a href="index.html" class="flex items-center cursor-pointer">
-    <img src="images/LOGOLIPSTEIN.jpeg" alt="Logo FarmaSur" class="h-8 w-auto object-contain hover:opacity-90 transition-opacity">
+    <img src="images/assets/LOGOLIPSTEIN.jpeg" alt="Logo FarmaSur" class="h-8 w-auto object-contain hover:opacity-90 transition-opacity">
 </a>
             
-            <!-- Buscador (Visual) -->
-            <div class="flex-grow max-w-2xl hidden md:block">
-                <div class="relative">
-                    <input type="text" placeholder="¿Qué estás buscando? (Ej: Ibupirac, Shampoo...)" 
-                           class="w-full border-2 border-gray-200 rounded-full py-2.5 px-5 focus:outline-none focus:border-blue-500 transition">
-                    <button class="absolute right-4 top-3 text-gray-400 font-bold hover:text-blue-500">
-                        Buscar
-                    </button>
-                </div>
-            </div>
+            <!-- Buscador Funcional con lupa (sin texto) -->
+           <div class="flex-grow max-w-2xl hidden md:block relative z-50">
+            <form action="categoria.html" method="GET" class="relative">
+                <input type="text" name="buscar" id="searchInput" oninput="buscarEnTiempoReal()" autocomplete="off" placeholder="Buscar" 
+                       class="w-full border-2 border-gray-150 rounded-full py-2.5 pl-5 pr-12 focus:outline-none focus:border-blue-500 transition text-sm bg-gray-50/50">
+                
+                <!-- Botón de lupa minimalista (en lugar de la palabra Buscar) -->
+                <button type="submit" class="absolute right-3.5 top-2.5 p-1 text-gray-400 hover:text-blue-600 transition cursor-pointer" aria-label="Buscar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z"/>
+                    </svg>
+                </button>
+            </form>
 
-            <!-- Botón del Carrito -->
-            <button id="cartBtn" class="flex items-center gap-2 bg-blue-50 text-blue-800 border border-blue-200 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition">
-                🛒 Mi Compra 
-                <span id="cartCount" class="bg-blue-800 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm shadow-sm">
-                    0
-                </span>
-            </button>
-        </div>
-
-        <!-- Navbar Inferior: Categorías -->
-        <nav class="bg-blue-800 text-white text-sm font-semibold shadow-inner">
-            <div class="container mx-auto px-4">
-                <ul class="flex space-x-8 overflow-x-auto py-3 hide-scrollbar">
-                    <li class="whitespace-nowrap hover:text-green-400 cursor-pointer transition border-b-2 border-transparent hover:border-green-400 pb-1">🔥 Ofertas del Mes</li>
-                    <li class="whitespace-nowrap hover:text-green-400 cursor-pointer transition border-b-2 border-transparent hover:border-green-400 pb-1">💊 Venta Libre</li>
-                    <li class="whitespace-nowrap hover:text-green-400 cursor-pointer transition border-b-2 border-transparent hover:border-green-400 pb-1">🧴 Dermocosmética</li>
-                    <li class="whitespace-nowrap hover:text-green-400 cursor-pointer transition border-b-2 border-transparent hover:border-green-400 pb-1">Cuidado Personal</li>
-                    <li class="whitespace-nowrap hover:text-green-400 cursor-pointer transition border-b-2 border-transparent hover:border-green-400 pb-1">👶 Bebés y Maternidad</li>
+            <!-- Caja flotante de resultados -->
+            <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden max-h-96 overflow-y-auto">
+                <ul id="searchResultsList" class="divide-y divide-gray-100">
+                    <!-- Los resultados se inyectan acá desde JS -->
                 </ul>
             </div>
-        </nav>
+        </div>
+
+       <!-- Botón de Carrito de Compras Tradicional, Cuadrado y Minimalista (Corregido) -->
+       <button id="cartBtn" class="relative p-2 text-blue-900 hover:text-blue-700 transition flex items-center justify-center cursor-pointer" aria-label="Mi Compra">
+        <!-- Icono de Carrito con Ruedas (SVG Vectorial de tamaño válido w-8 h-8) -->
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <!-- El canasto cuadrado del carro -->
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272" />
+            <!-- Las rueditas del carrito -->
+            <circle cx="6" cy="20.25" r="1.25" fill="currentColor" />
+            <circle cx="18.75" cy="20.25" r="1.25" fill="currentColor" />
+        </svg>
+        
+        <!-- Globito del contador rojo anclado arriba a la derecha del carro -->
+        <!-- Cambiado a top-0 right-0 y con posición absoluta para que flote bien -->
+        <span id="cartCount" class="absolute top-0 right-0 bg-red-500 text-white rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-black border-2 border-white shadow-sm transform translate-x-1 -translate-y-1">0</span>
+    </button>
+        </div>
+
+        <!-- Navbar Inferior con Menú Desplegable (Hover) -->
+       <nav class="bg-blue-800 text-white text-sm font-semibold shadow-inner relative z-40">
+        <div class="container mx-auto px-4">
+            <ul class="flex space-x-8 overflow-visible py-3 hide-scrollbar items-center">
+                
+                <!-- 1. BOTÓN CATEGORÍAS (Desplegable) -->
+                <!-- La clase 'group' le avisa a Tailwind que este elemento tiene un hover especial -->
+                <li class="relative group">
+                    <span class="whitespace-nowrap flex items-center gap-1 cursor-default pb-1 border-b-2 border-transparent hover:text-green-400 transition">
+                        ☰ Categorías
+                        <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+
+                    <!-- PRIMER NIVEL: Menú Principal -->
+                    <ul class="absolute left-0 top-full mt-0 w-64 bg-white border border-gray-100 shadow-xl rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2 text-gray-700">
+                        
+                        <!-- Categoría Principal 1 -->
+                        <!-- 'group/sub' crea un contexto de hover separado para el submenú -->
+                        <li class="relative group/sub">
+                            <span class="px-5 py-3 hover:bg-blue-50 flex justify-between items-center cursor-default hover:text-blue-700 transition-colors">
+                                💊 Venta Libre
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </span>
+                            
+                            <!-- SEGUNDO NIVEL: Submenú de Venta Libre -->
+                            <ul class="absolute left-full top-0 ml-0 w-56 bg-white border border-gray-100 shadow-xl rounded-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50 py-2">
+                                <li><a href="categoria.html?nombre=Medicamentos" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Analgésicos</a></li>
+                                <li><a href="categoria.html?nombre=Antigripales" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Antigripales</a></li>
+                                <li><a href="categoria.html?nombre=Gastrointestinales" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Gastrointestinales</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Categoría Principal 2 -->
+                        <li class="relative group/sub">
+                            <span class="px-5 py-3 hover:bg-blue-50 flex justify-between items-center cursor-default hover:text-blue-700 transition-colors">
+                                🧴 Dermocosmética
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </span>
+                            
+                            <!-- SEGUNDO NIVEL: Submenú de Dermocosmética -->
+                            <ul class="absolute left-full top-0 ml-0 w-56 bg-white border border-gray-100 shadow-xl rounded-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50 py-2">
+                                <li><a href="categoria.html?nombre=Limpieza Facial" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Limpieza Facial</a></li>
+                                <li><a href="categoria.html?nombre=Cremas Antiage" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Cremas Antiage</a></li>
+                                <li><a href="categoria.html?nombre=Protectores Solares" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Protectores Solares</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Categoría Principal 3 (Sin subcategorías) -->
+                        <li>
+                            <a href="categoria.html?nombre=Nutrición" class="block px-5 py-3 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+                                💪 Nutrición Deportiva
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- 2. ENLACES DIRECTOS (Opcional, para complementar el desplegable) -->
+                <li><a href="index.html" class="whitespace-nowrap hover:text-green-400 transition border-b-2 border-transparent hover:border-green-400 pb-1">🔥 Ofertas del Mes</a></li>
+                <li><a href="categoria.html?nombre=Venta Libre" class="whitespace-nowrap hover:text-green-400 transition border-b-2 border-transparent hover:border-green-400 pb-1">Medicamentos</a></li>
+                <li><a href="categoria.html?nombre=Dermocosmética" class="whitespace-nowrap hover:text-green-400 transition border-b-2 border-transparent hover:border-green-400 pb-1">Belleza</a></li>
+            </ul>
+        </div>
+    </nav>
     </header>
 
     <!-- MAIN: Contenedor donde se inyectará el producto -->
@@ -62,10 +133,12 @@
     </main>
 
     <!-- 1. Importamos la base de datos simulada -->
-    <script src="productos.js"></script>
+    <script src="js/productos.js"></script>
     
     <!-- 2. Importamos el motor del carrito -->
-    <script src="carrito.js"></script>
+    <script src="js/carrito.js"></script>
+
+    <script src="js/buscador.js"></script> <!-- Nuevo script -->
 
     <!-- 3. Lógica para renderizar el producto y manejar cantidad -->
     <script>
@@ -196,20 +269,14 @@
             }
         }
 
-        // Función puente: Agrega X veces el producto usando tu función addToCart original
-        function agregarConCantidad(nombre, precio) {
+       // Función puente mejorada: Manda el nombre, el precio y la cantidad directamente a carrito.js
+       function agregarConCantidad(nombre, precio) {
             const cantidad = parseInt(document.getElementById('inputCantidad').value) || 1;
             
-            // Silenciamos temporalmente el alert normal de carrito.js para que no salte 5 veces seguidas
-            const alertOriginal = window.alert;
-            window.alert = function() {}; 
+            // Llamamos a la nueva función de carrito.js pasándole la cantidad
+            addToCart(nombre, precio, cantidad);
             
-            // Agregamos la cantidad solicitada
-            for(let i = 0; i < cantidad; i++) {
-                addToCart(nombre, precio);
-            }
-            
-            // Reseteamos el contador a 1 por prolijidad
+            // Reseteamos el contador a 1
             document.getElementById('inputCantidad').value = 1;
         }
     </script>
