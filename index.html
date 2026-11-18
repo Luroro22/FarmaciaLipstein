@@ -10,78 +10,86 @@
 </head>
 <body class="bg-gray-50 font-sans">
 
-    <!-- Header Principal -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
+   <!-- HEADER (Adaptado 100% a Móviles y PC) -->
+   <header class="bg-white shadow-sm sticky top-0 z-50">
+        
+    <!-- Contenedor Principal Superior -->
+    <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-6">
+        
+        <!-- Fila 1 (Móvil): Hamburguesa, Logo y Carrito -->
+        <div class="flex justify-between items-center w-full md:w-auto">
+            
+            <!-- Botón Menú Hamburguesa (Visible solo en móvil) -->
+            <button onclick="toggleMobileMenu()" class="p-2 -ml-2 text-blue-900 hover:bg-gray-100 rounded-lg transition md:hidden" aria-label="Menú">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
             <!-- Logo -->
-            <a href="index.html" class="flex items-center cursor-pointer">
-                <img src="images/assets/LOGOLIPSTEIN.jpeg" alt="Logo FarmaSur" class="h-8 w-auto object-contain hover:opacity-90 transition-opacity">
+            <a href="index.html" class="flex items-center cursor-pointer flex-grow justify-center md:justify-start md:flex-grow-0">
+                <img src="images/assets/LOGOLIPSTEIN.jpeg" alt="Logo FarmaSur" class="h-8 md:h-10 w-auto object-contain hover:opacity-90 transition-opacity">
             </a>
             
-           <!-- Buscador Funcional con lupa (sin texto) -->
-           <div class="flex-grow max-w-2xl hidden md:block relative z-50">
+            <!-- Botón de Carrito (Visible en móvil) -->
+            <button id="cartBtn" onclick="toggleCart()" class="relative p-2 -mr-2 text-blue-900 hover:text-blue-700 transition flex items-center justify-center cursor-pointer md:hidden" aria-label="Mi Compra">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272" />
+                    <circle cx="6" cy="20.25" r="1.25" fill="currentColor" />
+                    <circle cx="18.75" cy="20.25" r="1.25" fill="currentColor" />
+                </svg>
+                <span id="cartCount" class="absolute top-0 right-0 bg-red-500 text-white rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-black border-2 border-white shadow-sm transform translate-x-1 -translate-y-1">0</span>
+            </button>
+        </div>
+        
+        <!-- Fila 2 (Móvil) / Centro (PC): Buscador -->
+        <div class="w-full md:flex-grow md:max-w-2xl relative z-50">
             <form action="categoria.html" method="GET" class="relative">
-                <input type="text" name="buscar" id="searchInput" oninput="buscarEnTiempoReal()" autocomplete="off" placeholder="Buscar" 
-                       class="w-full border-2 border-gray-150 rounded-full py-2.5 pl-5 pr-12 focus:outline-none focus:border-blue-500 transition text-sm bg-gray-50/50">
+                <input type="text" name="buscar" id="searchInput" oninput="buscarEnTiempoReal()" autocomplete="off" placeholder="Buscar medicamentos, marcas..." 
+                       class="w-full border-2 border-gray-200 rounded-full py-2.5 pl-5 pr-12 focus:outline-none focus:border-blue-500 transition text-sm bg-gray-50/50">
                 
-                <!-- Botón de lupa minimalista (en lugar de la palabra Buscar) -->
-                <button type="submit" class="absolute right-3.5 top-2.5 p-1 text-gray-400 hover:text-blue-600 transition cursor-pointer" aria-label="Buscar">
+                <button type="submit" class="absolute right-3.5 top-2.5 p-1 text-gray-400 hover:text-blue-600 transition cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z"/>
                     </svg>
                 </button>
             </form>
-
             <!-- Caja flotante de resultados -->
             <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden max-h-96 overflow-y-auto">
-                <ul id="searchResultsList" class="divide-y divide-gray-100">
-                    <!-- Los resultados se inyectan acá desde JS -->
-                </ul>
+                <ul id="searchResultsList" class="divide-y divide-gray-100"></ul>
             </div>
         </div>
 
-       <!-- Botón de Carrito de Compras Tradicional, Cuadrado y Minimalista (Corregido) -->
-       <button id="cartBtn" class="relative p-2 text-blue-900 hover:text-blue-700 transition flex items-center justify-center cursor-pointer" aria-label="Mi Compra">
-        <!-- Icono de Carrito con Ruedas (SVG Vectorial de tamaño válido w-8 h-8) -->
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <!-- El canasto cuadrado del carro -->
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272" />
-            <!-- Las rueditas del carrito -->
-            <circle cx="6" cy="20.25" r="1.25" fill="currentColor" />
-            <circle cx="18.75" cy="20.25" r="1.25" fill="currentColor" />
-        </svg>
-        
-        <!-- Globito del contador rojo anclado arriba a la derecha del carro -->
-        <!-- Cambiado a top-0 right-0 y con posición absoluta para que flote bien -->
-        <span id="cartCount" class="absolute top-0 right-0 bg-red-500 text-white rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-black border-2 border-white shadow-sm transform translate-x-1 -translate-y-1">0</span>
-    </button>
+        <!-- Botón de Carrito (Visible en PC a la derecha) -->
+        <button id="cartBtnDesktop" onclick="toggleCart()" class="hidden md:flex relative p-2 text-blue-900 hover:text-blue-700 transition items-center justify-center cursor-pointer" aria-label="Mi Compra">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272" />
+                <circle cx="6" cy="20.25" r="1.25" fill="currentColor" />
+                <circle cx="18.75" cy="20.25" r="1.25" fill="currentColor" />
+            </svg>
+            <span id="cartCountDesktop" class="absolute top-0 right-0 bg-red-500 text-white rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-black border-2 border-white shadow-sm transform translate-x-1 -translate-y-1">0</span>
+        </button>
+    </div>
 
-        </div>
-
-       <!-- Navbar Inferior con Menú Desplegable (Hover) -->
-       <nav class="bg-blue-800 text-white text-sm font-semibold shadow-inner relative z-40">
+    <!-- NAVBAR PC (Se oculta en móvil con "hidden md:block") -->
+    <nav class="bg-blue-800 text-white text-sm font-semibold shadow-inner relative z-40 hidden md:block">
         <div class="container mx-auto px-4">
             <ul class="flex space-x-8 overflow-visible py-3 hide-scrollbar items-center">
                 
-                <!-- 1. BOTÓN CATEGORÍAS (Desplegable) -->
-                <!-- La clase 'group' le avisa a Tailwind que este elemento tiene un hover especial -->
+                <!-- BOTÓN CATEGORÍAS (Desplegable) -->
                 <li class="relative group">
                     <span class="whitespace-nowrap flex items-center gap-1 cursor-default pb-1 border-b-2 border-transparent hover:text-green-400 transition">
-                        ☰ Categorías
+                        Categorías
                         <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </span>
-
                     <!-- PRIMER NIVEL: Menú Principal -->
                     <ul class="absolute left-0 top-full mt-0 w-64 bg-white border border-gray-100 shadow-xl rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2 text-gray-700">
-                        
                         <!-- Categoría Principal 1 -->
-                        <!-- 'group/sub' crea un contexto de hover separado para el submenú -->
                         <li class="relative group/sub">
                             <span class="px-5 py-3 hover:bg-blue-50 flex justify-between items-center cursor-default hover:text-blue-700 transition-colors">
                                 💊 Venta Libre
                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                             </span>
-                            
                             <!-- SEGUNDO NIVEL: Submenú de Venta Libre -->
                             <ul class="absolute left-full top-0 ml-0 w-56 bg-white border border-gray-100 shadow-xl rounded-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50 py-2">
                                 <li><a href="categoria.html?nombre=Medicamentos" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Analgésicos</a></li>
@@ -89,14 +97,12 @@
                                 <li><a href="categoria.html?nombre=Gastrointestinales" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Gastrointestinales</a></li>
                             </ul>
                         </li>
-
                         <!-- Categoría Principal 2 -->
                         <li class="relative group/sub">
                             <span class="px-5 py-3 hover:bg-blue-50 flex justify-between items-center cursor-default hover:text-blue-700 transition-colors">
                                 🧴 Dermocosmética
                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                             </span>
-                            
                             <!-- SEGUNDO NIVEL: Submenú de Dermocosmética -->
                             <ul class="absolute left-full top-0 ml-0 w-56 bg-white border border-gray-100 shadow-xl rounded-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50 py-2">
                                 <li><a href="categoria.html?nombre=Limpieza Facial" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Limpieza Facial</a></li>
@@ -104,55 +110,109 @@
                                 <li><a href="categoria.html?nombre=Protectores Solares" class="block px-5 py-2 hover:bg-blue-50 hover:text-blue-700 transition-colors">Protectores Solares</a></li>
                             </ul>
                         </li>
-
-                        <!-- Categoría Principal 3 (Sin subcategorías) -->
+                        <!-- Categoría Principal 3 -->
                         <li>
-                            <a href="categoria.html?nombre=Nutrición" class="block px-5 py-3 hover:bg-blue-50 hover:text-blue-700 transition-colors">
-                                💪 Nutrición Deportiva
-                            </a>
+                            <a href="categoria.html?nombre=Nutrición" class="block px-5 py-3 hover:bg-blue-50 hover:text-blue-700 transition-colors">💪 Nutrición Deportiva</a>
                         </li>
                     </ul>
                 </li>
 
-                <!-- 2. ENLACES DIRECTOS (Opcional, para complementar el desplegable) -->
+                <!-- ENLACES DIRECTOS -->
                 <li><a href="index.html" class="whitespace-nowrap hover:text-green-400 transition border-b-2 border-transparent hover:border-green-400 pb-1">🔥 Ofertas del Mes</a></li>
                 <li><a href="categoria.html?nombre=Venta Libre" class="whitespace-nowrap hover:text-green-400 transition border-b-2 border-transparent hover:border-green-400 pb-1">Medicamentos</a></li>
                 <li><a href="categoria.html?nombre=Dermocosmética" class="whitespace-nowrap hover:text-green-400 transition border-b-2 border-transparent hover:border-green-400 pb-1">Belleza</a></li>
             </ul>
         </div>
     </nav>
-    </header>
+</header>
+
+<!-- MENÚ LATERAL MÓVIL (Oculto por defecto) -->
+<div id="mobileMenuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-[60] opacity-0 pointer-events-none transition-opacity duration-300 md:hidden" onclick="toggleMobileMenu()"></div>
+    
+<div id="mobileMenuSidebar" class="fixed top-0 left-0 h-full w-4/5 max-w-sm bg-white shadow-2xl z-[70] transform -translate-x-full transition-transform duration-300 flex flex-col md:hidden">
+    
+    <!-- Encabezado del menú móvil -->
+    <div class="p-5 border-b flex justify-between items-center bg-blue-800 text-white">
+        <h2 class="text-xl font-extrabold flex items-center gap-2">
+            ☰ Categorías
+        </h2>
+        <button onclick="toggleMobileMenu()" class="text-white font-bold w-8 h-8 rounded-full hover:bg-blue-700 transition flex items-center justify-center text-xl">✖</button>
+    </div>
+
+    <!-- Lista de enlaces móvil (Estilo Acordeón) -->
+    <div class="flex-grow overflow-y-auto p-5">
+        <ul class="space-y-4 font-semibold text-gray-700 text-lg">
+            <li class="border-b border-gray-100 pb-3">
+                <a href="index.html" class="block text-blue-600">🔥 Ofertas del Mes</a>
+            </li>
+            
+            <!-- Acordeón: Venta Libre -->
+            <li class="border-b border-gray-100 pb-3">
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <span>💊 Venta Libre</span>
+                        <span class="transition group-open:rotate-180">▼</span>
+                    </summary>
+                    <ul class="mt-3 ml-4 space-y-3 text-base text-gray-500 font-medium">
+                        <li><a href="categoria.html?nombre=Medicamentos" class="block active:text-blue-600">Analgésicos</a></li>
+                        <li><a href="categoria.html?nombre=Antigripales" class="block active:text-blue-600">Antigripales</a></li>
+                        <li><a href="categoria.html?nombre=Gastrointestinales" class="block active:text-blue-600">Gastrointestinales</a></li>
+                    </ul>
+                </details>
+            </li>
+
+            <!-- Acordeón: Dermocosmética -->
+            <li class="border-b border-gray-100 pb-3">
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer list-none">
+                        <span>🧴 Dermocosmética</span>
+                        <span class="transition group-open:rotate-180">▼</span>
+                    </summary>
+                    <ul class="mt-3 ml-4 space-y-3 text-base text-gray-500 font-medium">
+                        <li><a href="categoria.html?nombre=Limpieza Facial" class="block active:text-blue-600">Limpieza Facial</a></li>
+                        <li><a href="categoria.html?nombre=Cremas Antiage" class="block active:text-blue-600">Cremas Antiage</a></li>
+                        <li><a href="categoria.html?nombre=Protectores Solares" class="block active:text-blue-600">Protectores Solares</a></li>
+                    </ul>
+                </details>
+            </li>
+
+            <li class="pb-3">
+                <a href="categoria.html?nombre=Nutrición" class="block">💪 Nutrición Deportiva</a>
+            </li>
+        </ul>
+    </div>
+</div>
 
     <!-- Carrusel de Banners Promocionales -->
     <div class="container mx-auto px-4 mt-6">
-        <div class="relative w-full max-w-6xl mx-auto overflow-hidden rounded-2xl shadow-sm group">
+        <!-- AGREGAMOS id="carouselWrapper" ACÁ -->
+        <div id="carouselWrapper" class="relative w-full max-w-6xl mx-auto overflow-hidden rounded-2xl shadow-sm group">
             
-            <!-- Contenedor que se desliza -->
-            <div id="carouselInner" class="flex transition-transform duration-500 ease-out" style="transform: translateX(0%);">
+            <div id="carouselInner" class="flex transition-transform duration-500 ease-out cursor-grab active:cursor-grabbing" style="transform: translateX(0%);">
                 
                 <!-- Banner 1 -->
-                <div class="w-full flex-shrink-0 relative cursor-pointer">
-                    <!-- Cambiá este link por tu imagen real  TAMAÑO IMAGEN 1200X350PX-->
-                    <img src="images/assets/propaganda1.webp" alt="Promo Dermocosmética" class="w-full h-auto block">
+                <div class="w-full flex-shrink-0 relative">
+                    <!-- MÓVIL: Ahora tiene h-56 (más bajito) y object-cover para que no se deforme -->
+                    <img src="images/assets/propagandamovil1.webp" alt="Promo 1 Móvil" class="w-full h-85 object-cover block md:hidden pointer-events-none select-none">
+                    <img src="images/assets/propaganda1.webp" alt="Promo 1 PC" class="w-full h-auto hidden md:block pointer-events-none select-none">
                 </div>
                 
                 <!-- Banner 2 -->
-                <div class="w-full flex-shrink-0 relative cursor-pointer">
-                    <img src="images/assets/propaganda2.webp" alt="Promo Bebés" class="w-full h-auto block">
-                </div>
-
-                <!-- Banner 3 -->
-                <div class="w-full flex-shrink-0 relative cursor-pointer">
-                    <img src="images/assets/propaganda3.webp" alt="Promo Bebés" class="w-full h-auto block">
+                <div class="w-full flex-shrink-0 relative">
+                    <img src="images/assets/propagandamovil2.webp" alt="Promo 2 Móvil" class="w-full h-85 object-cover block md:hidden pointer-events-none select-none">
+                    <img src="images/assets/propaganda2.webp" alt="Promo 2 PC" class="w-full h-auto hidden md:block pointer-events-none select-none">
                 </div>
                 
+                <!-- Banner 3 -->
+                <div class="w-full flex-shrink-0 relative">
+                    <img src="images/assets/propagandamovil3.webp" alt="Promo 3 Móvil" class="w-full h-85 object-cover block md:hidden pointer-events-none select-none">
+                    <img src="images/assets/propaganda3.webp" alt="Promo 3 PC" class="w-full h-auto hidden md:block pointer-events-none select-none">
+                </div>
             </div>
 
-            <!-- Flechas de control (Aparecen al pasar el mouse) -->
-            <button onclick="moverCarrusel(-1)" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white text-blue-900 w-10 h-10 rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-bold z-10">❮</button>
-            <button onclick="moverCarrusel(1)" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white text-blue-900 w-10 h-10 rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-bold z-10">❯</button>
+            <button onclick="moverCarrusel(-1)" class="hidden md:flex absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white text-blue-900 w-10 h-10 rounded-full items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-bold z-10">❮</button>
+            <button onclick="moverCarrusel(1)" class="hidden md:flex absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white text-blue-900 w-10 h-10 rounded-full items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity font-bold z-10">❯</button>
 
-            <!-- Puntos indicadores inferiores -->
             <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                 <div class="carousel-dot w-2 h-2 rounded-full bg-white opacity-100 transition-opacity"></div>
                 <div class="carousel-dot w-2 h-2 rounded-full bg-white opacity-50 transition-opacity"></div>
@@ -169,6 +229,67 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="productGrid">
         </div>
     </main>
+   <!-- FOOTER (Pie de Página - Versión 3 Columnas) -->
+    <footer class="bg-blue-900 text-gray-200 pt-12 pb-6 mt-16 border-t-4 border-green-500">
+        <div class="container mx-auto px-4 max-w-6xl">
+            
+            <!-- Grilla de 3 columnas equitativas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                
+                <!-- Columna 1: Marca y Descripción (Alineada a la izquierda) -->
+                <div class="flex flex-col">
+                    <div class="bg-white inline-block p-2 rounded-lg w-max mb-4">
+                        <img src="images/assets/LOGOLIPSTEIN.jpeg" alt="Logo FarmaSur" class="h-10 w-auto object-contain">
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed pr-4">
+                        Tu farmacia de confianza. Ofrecemos una amplia variedad de medicamentos, productos de dermocosmética y cuidado personal con la mejor atención.
+                    </p>
+                </div>
+
+                <!-- Columna 2: Contacto (Centrada en PC) -->
+                <div class="md:mx-auto">
+                    <h3 class="text-lg font-bold text-white mb-4 border-b border-blue-700 pb-2 inline-block">Contacto</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-400 text-lg">📍</span>
+                            <span>Viamonte 1200, Bahía Blanca<br>Provincia de Buenos Aires</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400 text-lg">📱</span>
+                            <span>WhatsApp: +54 9 291 XXXXXXX</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-400 text-lg">🕒</span>
+                            <span>Lunes a Sábados<br>08:30 a 12:30 - 16:00 a 20:30</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Redes Sociales (Empujada a la derecha en PC) -->
+                <div class="md:flex md:flex-col md:items-end">
+                    <div class="w-max">
+                        <h3 class="text-lg font-bold text-white mb-4 border-b border-blue-700 pb-2 inline-block w-full">Seguinos</h3>
+                        <div class="flex gap-4 md:justify-end">
+                            <!-- Botón Instagram -->
+                            <a href="#" class="w-10 h-10 bg-blue-800 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-blue-900 transition shadow-lg">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                            </a>
+                            <!-- Botón Facebook -->
+                            <a href="#" class="w-10 h-10 bg-blue-800 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-blue-900 transition shadow-lg">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila Inferior: Copyright -->
+            <div class="border-t border-blue-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+                <p>&copy; 2026 Farmacia Lipstein. Todos los derechos reservados.</p>
+                <p class="mt-2 md:mt-0">Desarrollado para Lipstein</p>
+            </div>
+        </div>
+    </footer>
 
     
 
@@ -238,58 +359,175 @@
             const ofertas = productosFarmacia.filter(prod => prod.descuento !== null);
             renderizarProductos(ofertas);
         });
-        // --- MOTOR DEL CARRUSEL ---
-        let slideActual = 0;
-        const totalSlides = 3; // Cambiá este número si agregás o quitás banners
+       // ==========================================
+        // MOTOR DEL CARRUSEL INFINITO Y TÁCTIL
+        // ==========================================
+        const carouselInner = document.getElementById('carouselInner');
+        const carouselWrapper = document.getElementById('carouselWrapper');
+        const dots = document.querySelectorAll('.carousel-dot');
+        
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        let animationID;
         let intervaloCarrusel;
 
-        function actualizarCarrusel() {
-            // Mueve la tira de imágenes
-            const contenedor = document.getElementById('carouselInner');
-            if (contenedor) {
-                contenedor.style.transform = `translateX(-${slideActual * 100}%)`;
-            }
+        // 1. PREPARACIÓN DEL BUCLE INFINITO (Clonación)
+        const slidesOriginales = Array.from(carouselInner.children);
+        const primerSlide = slidesOriginales[0].cloneNode(true);
+        const ultimoSlide = slidesOriginales[slidesOriginales.length - 1].cloneNode(true);
+        
+        // Pegamos los clones en los extremos
+        carouselInner.appendChild(primerSlide);
+        carouselInner.insertBefore(ultimoSlide, slidesOriginales[0]);
+        
+        const totalSlides = carouselInner.children.length; // Ahora son 5 fotos (3 reales + 2 clones)
+        let indiceActual = 1; // Empezamos en 1 porque el índice 0 es un clon
 
-            // Actualiza los puntitos de abajo
-            const puntos = document.querySelectorAll('.carousel-dot');
-            puntos.forEach((punto, index) => {
-                if (index === slideActual) {
-                    punto.classList.replace('opacity-50', 'opacity-100');
-                    punto.classList.add('scale-125');
+        // Ajustamos la vista inicial para esquivar el clon
+        carouselInner.classList.remove('transition-transform');
+        carouselInner.style.transform = `translateX(-100%)`;
+
+        // Evitar que la PC intente descargar la imagen al arrastrar
+        document.querySelectorAll('#carouselInner img').forEach(img => {
+            img.addEventListener('dragstart', (e) => e.preventDefault());
+        });
+
+        // 2. FUNCIONES DE MOVIMIENTO
+        function moverCarrusel(direccion) {
+            indiceActual += direccion;
+            actualizarCarrusel();
+        }
+
+        function actualizarCarrusel() {
+            carouselInner.classList.add('transition-transform', 'duration-500');
+            carouselInner.style.transform = `translateX(-${indiceActual * 100}%)`;
+            
+            // Actualizar puntitos (Matemática para que coincidan los reales)
+            let indicePunto = indiceActual - 1;
+            if (indicePunto < 0) indicePunto = slidesOriginales.length - 1;
+            if (indicePunto >= slidesOriginales.length) indicePunto = 0;
+            
+            dots.forEach((dot, index) => {
+                if (index === indicePunto) {
+                    dot.classList.remove('opacity-50');
+                    dot.classList.add('opacity-100');
                 } else {
-                    punto.classList.replace('opacity-100', 'opacity-50');
-                    punto.classList.remove('scale-125');
+                    dot.classList.remove('opacity-100');
+                    dot.classList.add('opacity-50');
                 }
             });
         }
 
-        function moverCarrusel(direccion) {
-            slideActual = (slideActual + direccion + totalSlides) % totalSlides;
-            actualizarCarrusel();
-            reiniciarIntervalo(); // Pausa el autoplay si el usuario hace clic
+        // 3. EL TRUCO DE MAGIA: SALTO INVISIBLE
+        // Cuando termina la animación de deslizar, revisamos si estamos en un clon
+        carouselInner.addEventListener('transitionend', () => {
+            if (indiceActual === totalSlides - 1) { // Llegamos al clon del primero
+                carouselInner.classList.remove('transition-transform', 'duration-500');
+                indiceActual = 1; // Teletransporte al primero real
+                carouselInner.style.transform = `translateX(-${indiceActual * 100}%)`;
+            }
+            if (indiceActual === 0) { // Llegamos al clon del último
+                carouselInner.classList.remove('transition-transform', 'duration-500');
+                indiceActual = totalSlides - 2; // Teletransporte al último real
+                carouselInner.style.transform = `translateX(-${indiceActual * 100}%)`;
+            }
+        });
+
+        // 4. MOTOR TÁCTIL Y DE ARRASTRE
+        if (carouselWrapper && carouselInner) {
+            carouselWrapper.addEventListener('touchstart', dragStart, { passive: true });
+            carouselWrapper.addEventListener('touchend', dragEnd);
+            carouselWrapper.addEventListener('touchmove', dragMove, { passive: true });
+
+            carouselWrapper.addEventListener('mousedown', dragStart);
+            carouselWrapper.addEventListener('mouseup', dragEnd);
+            carouselWrapper.addEventListener('mouseleave', dragEnd);
+            carouselWrapper.addEventListener('mousemove', dragMove);
         }
 
-        // Función para que pase solo cada 4 segundos
-        function iniciarAutoplay() {
+        function dragStart(e) {
+            clearInterval(intervaloCarrusel);
+            isDragging = true;
+            startPos = getPositionX(e);
+            
+            const transformString = carouselInner.style.transform;
+            const match = transformString.match(/translateX\((-?\d+\.?\d*)%\)/);
+            prevTranslate = match ? parseFloat(match[1]) : -(indiceActual * 100);
+            currentTranslate = prevTranslate;
+            
+            carouselInner.classList.remove('transition-transform', 'duration-500');
+            animationID = requestAnimationFrame(animarArrastre);
+        }
+
+        function dragMove(e) {
+            if (isDragging) {
+                const diffPixels = getPositionX(e) - startPos;
+                const diffPorcentaje = (diffPixels / carouselWrapper.clientWidth) * 100;
+                currentTranslate = prevTranslate + diffPorcentaje;
+            }
+        }
+
+        function dragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            cancelAnimationFrame(animationID);
+            
+            carouselInner.classList.add('transition-transform', 'duration-500');
+            const movimientoArrastrado = currentTranslate - prevTranslate;
+            
+            if (movimientoArrastrado < -15) moverCarrusel(1);
+            else if (movimientoArrastrado > 15) moverCarrusel(-1);
+            else actualizarCarrusel(); // Rebote
+            
+            reiniciarIntervalo();
+        }
+
+        function getPositionX(e) {
+            return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        }
+
+        function animarArrastre() {
+            if (isDragging) {
+                carouselInner.style.transform = `translateX(${currentTranslate}%)`;
+                requestAnimationFrame(animarArrastre);
+            }
+        }
+
+        // 5. AUTOPLAY
+        function iniciarIntervalo() {
             intervaloCarrusel = setInterval(() => {
                 moverCarrusel(1);
-            }, 4000);
+            }, 4000); // Pasa cada 4 segundos
         }
-
         function reiniciarIntervalo() {
             clearInterval(intervaloCarrusel);
-            iniciarAutoplay();
+            iniciarIntervalo();
         }
-
-        // Iniciamos el carrusel al cargar la página
-        document.addEventListener('DOMContentLoaded', () => {
-            // ... (acá seguro tenías el código de las ofertas) ...
-            const ofertas = productosFarmacia.filter(prod => prod.descuento !== null);
-            renderizarProductos(ofertas);
+        
+        iniciarIntervalo(); // Arrancamos el motor al cargar
+        // Función para abrir y cerrar el menú móvil
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('mobileMenuSidebar');
+            const overlay = document.getElementById('mobileMenuOverlay');
             
-            // Arrancamos el autoplay
-            iniciarAutoplay();
-        });
+            if (sidebar) {
+                sidebar.classList.toggle('-translate-x-full');
+                
+                // Si el menú se está ocultando
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                    overlay.classList.add('opacity-0', 'pointer-events-none');
+                    document.body.style.overflow = 'auto'; // Reactivamos el scroll de la web
+                } else {
+                    // Si el menú se está mostrando
+                    overlay.classList.remove('opacity-0', 'pointer-events-none');
+                    overlay.classList.add('opacity-100', 'pointer-events-auto');
+                    document.body.style.overflow = 'hidden'; // Bloqueamos el scroll del fondo
+                }
+            }
+        }
     </script>
 </body>
 </html>

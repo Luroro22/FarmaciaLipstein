@@ -246,6 +246,4 @@ function sendToWhatsApp() {
 document.addEventListener('DOMContentLoaded', () => {
     inyectarCarritoHTML(); 
     updateCartUI();        
-    const cartBtn = document.getElementById('cartBtn');
-    if(cartBtn) cartBtn.addEventListener('click', toggleCart);
 });
